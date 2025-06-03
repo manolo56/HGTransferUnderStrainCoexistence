@@ -172,11 +172,12 @@ for g in range(1,N_generation+1) :
             tot_mut[i] += 1 # update tot_mut 
             freqs[i][ancestor_ind] -= 1  # update the population size of the substrain affected (loose one individual that has mutated)
             new_s = np.random.gamma(k, scale=theta) # sample the selective effect of the new mutation  
+            anc_fit_value = fit_values[i][ancestor_ind] # store the fitness value of the ancestor in case we remove the ancestor
             if freqs[i][ancestor_ind]==0 :  # very rare case when a mutation causes a substrain to go extinct
                 freqs[i].pop(ancestor_ind) # I remove the extinct substrain fril the lists
                 fit_values[i].pop(ancestor_ind)
                 l -= 1  # I update the number of strains
-            fit_values[i].append(fit_values[i][ancestor_ind]*(1+new_s)) # add the new substrain created by the new mutation
+            fit_values[i].append(anc_fit_value*(1+new_s)) # add the new substrain created by the new mutation
             # its fitness is equal to the fitness of its parent times (1+new_s)
             freqs[i].append(1) # I add the new substrain  to the list of population sizes within the color
             l += 1  # update the number of substrains
